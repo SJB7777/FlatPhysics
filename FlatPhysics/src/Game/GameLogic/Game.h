@@ -51,7 +51,7 @@ private:
 	std::vector<FlatEntity*> entityVector;
 	std::vector<FlatEntity*> entityRemovalVector;
 	
-	FlatWorld world{ {0, 0} };
+	FlatWorld world{ {0, 98.1} };
 	
 };
 

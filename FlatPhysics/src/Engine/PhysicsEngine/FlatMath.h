@@ -84,10 +84,7 @@ namespace FlatPhysics {
 
 		static FlatVector Normalize(const FlatVector& v) {
 			float len = Length(v);
-			if (len < VerySmallAmount())
-			{
-				std::cout << "too small \n";
-			}
+			
 			
 			return FlatVector(v.x / len, v.y / len);
 		}
@@ -108,6 +105,10 @@ namespace FlatPhysics {
 		static bool NearlyEqual(const FlatVector& a, const FlatVector& b)
 		{
 			return DistanceSquared(a, b) < VerySmallAmount() * VerySmallAmount();
+		}
+		static FlatVector Perpendicular(const FlatVector& v) {
+			
+			return FlatVector(-v.y, v.x);
 		}
 	};
 	

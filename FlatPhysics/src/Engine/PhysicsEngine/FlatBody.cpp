@@ -41,12 +41,7 @@ namespace FlatPhysics
 	}
 
 
-	//std::vector<int> FlatBody::CreateBoxTriangles()
-	//{
-	//	std::vector<int> triangles = { 0, 1, 2, 0, 2, 3 };
-	//	return triangles;
-	//
-	//}
+	
 
 
 	std::vector<FlatVector> FlatBody::CreateBoxVertices(float width, float height)
@@ -77,7 +72,7 @@ namespace FlatPhysics
 			FlatTransform transform(position, angle);
 			for (int i = 0; i < vertices.size(); i++)
 			{
-				FlatVector v = vertices[i];
+				FlatVector& v = vertices[i];
 				transformedVertices[i] = FlatVector::Transform(v, transform);
 			}
 		}
@@ -90,6 +85,7 @@ namespace FlatPhysics
 	{
 		if(aabbUpdateRequired)
 		{
+			
 			float minX = std::numeric_limits<float>::max();
 			float minY = std::numeric_limits<float>::max();
 			float maxX = std::numeric_limits<float>::lowest();
@@ -98,10 +94,9 @@ namespace FlatPhysics
 			{
 				std::vector<FlatVector> vertices = GetTransformedVertices();
 
-				for (int i = 0; i < vertices.size(); i++)
+				for (auto& v: vertices)
 				{
-					FlatVector v = vertices[i];
-
+					
 					if (v.x < minX) { minX = v.x; }
 					if (v.x > maxX) { maxX = v.x; }
 					if (v.y < minY) { minY = v.y; }
@@ -280,8 +275,5 @@ namespace FlatPhysics
 		return true;
 	}
 
-	bool CreateParticle(float mass, bool isStatic, float restitution, FlatBody& body, std::string& errorMessage)
-	{
-		return true;
-	}
+	
 }

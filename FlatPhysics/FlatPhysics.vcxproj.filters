@@ -72,7 +72,7 @@
     <ClInclude Include="src\Engine\PhysicsEngine\FlatIAABB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\PhysicsEngine\FlatJoint.h">
+    <ClInclude Include="src\Engine\PhysicsEngine\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -105,9 +105,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\GameEngine\FlatEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\PhysicsEngine\FlatJoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

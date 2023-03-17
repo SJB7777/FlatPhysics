@@ -38,6 +38,15 @@ namespace FlatPhysics {
 			return FlatVector(-x, -y);
 		}
 		
+		float Length() const {
+			return sqrt(x * x + y + y);
+		}
+
+		FlatVector Normalize() const {
+			float length = Length();
+			return { x / length, y / length };
+		}
+
 		bool operator== (const FlatVector& other) const;
 		
 		static FlatVector Transform(FlatVector v, FlatTransform transform);

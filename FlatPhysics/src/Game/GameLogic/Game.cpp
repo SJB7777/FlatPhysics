@@ -19,7 +19,7 @@ void Game::Setting() {
     
     float padding = (CameraExtent.right - CameraExtent.left) * 0.1f;
     
-    /*FlatBody* groundBody = new FlatBody();
+    FlatBody* groundBody = new FlatBody();
 
     if (!FlatBody::CreateBoxBody(CameraExtent.right - CameraExtent.left - padding * 2, 30.0f, 1.0f, 
         true, 0.5f, *groundBody, errorMessage))
@@ -28,7 +28,7 @@ void Game::Setting() {
     }
     groundBody->MoveTo({ 0, 100.0f });
     world.AddBody(groundBody);
-    entityVector.push_back(new FlatEntity(groundBody, DARKGREEN));*/
+    entityVector.push_back(new FlatEntity(groundBody, DARKGREEN));
     
     
 
@@ -56,31 +56,12 @@ void Game::Setting() {
     world.AddBody(ledgeBody2);
     entityVector.push_back(new FlatEntity(ledgeBody2, BROWN));*/
     
-    FlatBody* bodyA = new FlatBody();
-    if (!FlatBody::CreateCircleBody(20.0f, 1.0f,
-        false, 0.5f, *bodyA, errorMessage))
-    {
-        throw std::invalid_argument(errorMessage);
-    }
-    bodyA->MoveTo({ -100.0f, 90.0f });
     
-    world.AddBody(bodyA);
-    entityVector.push_back(new FlatEntity(bodyA, DARKGRAY));
 
-    FlatBody* bodyB = new FlatBody();
-    if (!FlatBody::CreateCircleBody(20.0f, 1.0f,
-        false, 0.5f, *bodyB, errorMessage))
-    {
-        throw std::invalid_argument(errorMessage);
-    }
-    bodyB->MoveTo({ -30.0f, 90.0f });
-
-    world.AddBody(bodyB);
-    entityVector.push_back(new FlatEntity(bodyB, BROWN));
-
-    world.ConnectTwoBody(bodyA, bodyB, JointType::DampingSpring, 100, 10000);
-   
+    
 }
+
+
 
 void Game::Update(float deltaTime) {
 
@@ -105,12 +86,16 @@ void Game::Update(float deltaTime) {
     // add circle body
     if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
     {
+
         float radius = RandomHelper::RandomFloat(12.5f, 17.5f);
 
         FlatVector mouseWorldPosition =
             FlatConverter::ToFlatVector(GetScreenToWorld2D(GetMousePosition(), camera.camera));
 
         entityVector.push_back(new FlatEntity(world, radius, false, mouseWorldPosition));
+
+        
+
         
     }
 
@@ -189,6 +174,9 @@ void Game::Draw(float deltaTime) {
     {
         entityVector[i]->Draw();
     }
+
+    
+    
 
     EndMode2D();
 

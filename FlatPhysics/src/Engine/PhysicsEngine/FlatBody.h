@@ -98,7 +98,7 @@ namespace FlatPhysics {
 
 		static bool CreateBoxBody(float width, float height, float density, bool isStatic, float restitution, FlatBody& body, std::string& errorMessage);
 
-		static bool CreateParticle(float mass, bool isStatic, float restitution, FlatBody& body, std::string& errorMessage);
+		
 	};
 
 }

@@ -194,6 +194,7 @@ namespace FlatPhysics
 		
 		if (shapeTypeA == ShapeType::Box)
 		{
+			
 			if (shapeTypeB == ShapeType::Box)
 			{
 				
@@ -214,10 +215,13 @@ namespace FlatPhysics
 				normal = -normal;
 				return result;
 			}
+
+			
 		}
 
 		else if (shapeTypeA == ShapeType::Circle)
 		{
+			
 			if (shapeTypeB == ShapeType::Box)
 			{
 				
@@ -412,12 +416,14 @@ namespace FlatPhysics
 		return true;
 	}
 
+	
 
+	
 
 	int Collisions::FindClosestPointOnPolygon(const FlatVector& circleCenter, const std::vector<FlatVector>& vertices)
 	{
 		
-		//int result = 0;
+		
 		int result = -1;
 		float minDistanceSq = std::numeric_limits<float>::max();
 

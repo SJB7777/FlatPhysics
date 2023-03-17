@@ -4,8 +4,7 @@
 #include "FlatVector.h"
 #include "Collisions.h"
 #include "FlatManifold.h"
-#include "FlatJoint.h"
-
+#include "FlatBody.h"
 
 namespace FlatPhysics {
 	
@@ -16,10 +15,10 @@ namespace FlatPhysics {
 	class FlatWorld {
 
 	private:
-
 		
-		std::vector<FlatJoint*> jointVector;
-		std::vector<FlatBody*> bodyVector;
+		
+		
+
 		FlatVector gravity;
 		std::vector<std::pair<int, int>> contactPairs;
 
@@ -30,22 +29,23 @@ namespace FlatPhysics {
 		FlatVector frictionImpulseArray[2];
 		float jArray[2];
 	public:
+		
+		std::vector<FlatBody*> bodyVector;
+
 		FlatWorld(const FlatVector& gravity);
 		~FlatWorld();
 
 		int BodyCount();
 
 		void AddBody(FlatBody* body);
+
 		
+
 		void RemoveBody(FlatBody* body);
 
-		void RemoveJoint(FlatBody* body);
-
-		void RemoveJoint(FlatJoint* joint);
+		
 
 		bool GetBody(int index, FlatBody* &body);
-
-		void ConnectTwoBody(FlatBody* bodyA, FlatBody* bodyB, JointType type, float distance, float magnitude);
 
 		void Step(float time, int iterations);
 		void TestStep(float time, int iterations);

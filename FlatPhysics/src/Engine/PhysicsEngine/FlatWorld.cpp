@@ -1,11 +1,12 @@
 #include "FlatWorld.h"
-
+#include "Timer.h"
 namespace FlatPhysics 
 {
 
 	FlatWorld::FlatWorld(const FlatVector& gravity) : gravity(gravity)
 	{
-
+		bodyVector.reserve(100);
+		contactPairs.reserve(10000);
 	}
 
 	FlatWorld::~FlatWorld()
@@ -24,30 +25,18 @@ namespace FlatPhysics
 	void FlatWorld::AddBody(FlatBody* body)
 	{
 		bodyVector.push_back(body);
+		
 	}
-
+	
 	void FlatWorld::RemoveBody(FlatBody* body)
 	{
-		RemoveJoint(body);
+		
 		bodyVector.erase(remove(bodyVector.begin(), bodyVector.end(), body), bodyVector.end());
 		
 	}
 
-	void FlatWorld::RemoveJoint(FlatBody* body)
-	{
-		for (auto it = jointVector.begin(); it != jointVector.end(); ++it) 
-		{
-			if ((*it)->GetBodyA() == body || (*it)->GetBodyB() == body) 
-			{
-				jointVector.erase(it);
-				return;
-			}
-		}
-	}
-	void FlatWorld::RemoveJoint(FlatJoint* joint)
-	{
-		jointVector.erase(remove(jointVector.begin(), jointVector.end(), joint), jointVector.end());
-	}
+	
+	
 
 	bool FlatWorld::GetBody(int index, FlatBody*& body)
 	{
@@ -60,19 +49,16 @@ namespace FlatPhysics
 		return true;
 	}
 
-	void FlatWorld::ConnectTwoBody(FlatBody* bodyA, FlatBody* bodyB, JointType type, float distance, float magnitude)
-	{
-		FlatJoint* joint = new FlatJoint(bodyA, bodyB, type, distance, magnitude);
-		jointVector.push_back(joint);
-	}
-
+	
 	void FlatWorld::Step(float time, int totalIterations)
 	{
+		
 		totalIterations = FlatMath::Clamp(totalIterations, MinIterations(), MaxIterations());
 		
 		for (int currentIteration = 0; currentIteration < totalIterations; currentIteration++)
 		{ 
 			contactPairs.clear();
+			
 			StepBodies(time, totalIterations);
 			BroadPhase();
 			NarrowPhase();
@@ -125,12 +111,13 @@ namespace FlatPhysics
 				{
 					continue;
 				}
+				
 				if (!Collisions::IntersectAABBs(bodyA_aabb, bodyB_aabb))
 				{
 					continue;
+					
 				}
 				
-
 				contactPairs.push_back({ i, j });
 			}
 		}
@@ -138,16 +125,18 @@ namespace FlatPhysics
 
 	void FlatWorld::NarrowPhase()
 	{
-		for (int i = 0; i < contactPairs.size(); i++)
+		for (auto& pair : contactPairs)
 		{
-			auto pair = contactPairs[i];
 			FlatBody* bodyA = bodyVector[pair.first];
 			FlatBody* bodyB = bodyVector[pair.second];
 
 			FlatVector normal;
 			float depth;
+			
+			
 			if (Collisions::Collide(bodyA, bodyB, normal, depth))
 			{
+				
 				SeperateBodies(bodyA, bodyB, normal * depth);
 
 				FlatVector contact1;
@@ -167,14 +156,11 @@ namespace FlatPhysics
 	
 	void FlatWorld::StepBodies(float time, int totalIterations)
 	{
-		for (int i = 0; i < bodyVector.size(); i++)
+		for (auto& body : bodyVector)
 		{
-			bodyVector[i]->Step(time, gravity, totalIterations);
+			body->Step(time, gravity, totalIterations);
 		}
-		for (auto& joint : jointVector)
-		{
-			joint->ApplyForce();
-		}
+		
 	}
 
 	void FlatWorld::ResolveCollisionBasic(const FlatManifold& contact)

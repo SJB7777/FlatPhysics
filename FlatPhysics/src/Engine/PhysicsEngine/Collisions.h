@@ -52,9 +52,10 @@ namespace FlatPhysics
 		bool static IntersectCircles(
 			const FlatVector& centerA, const float radiusA, const FlatVector& centerB, const float radiusB,
 			FlatVector& normal, float& depth);
-
+		
+		
 	private:
-
+		
 		int static FindClosestPointOnPolygon(const FlatVector& circleCenter, const std::vector<FlatVector>& vertices);
 
 		void static ProjectCircle(const FlatVector& center, const float radius, const FlatVector& axis, float& min, float& max);
