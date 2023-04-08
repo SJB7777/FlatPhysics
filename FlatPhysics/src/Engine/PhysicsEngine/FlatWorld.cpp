@@ -102,7 +102,7 @@ namespace FlatPhysics
 		}
 	}
 
-	void FlatWorld::SeperateBodies(FlatBody* bodyA, FlatBody* bodyB, const FlatVector& mtv)
+	void FlatWorld::SeperateBodies(MultiBody* bodyA, MultiBody* bodyB, const FlatVector& mtv)
 	{
 		if (bodyA->IsStatic)
 		{
@@ -124,13 +124,13 @@ namespace FlatPhysics
 	void FlatWorld::BroadPhase()
 	{
 		
-		for (int i = 0; i < bodyVector.size() - 1; i++)
+		for (int i = 0; i < multiVector.size() - 1; i++)
 		{
-			FlatBody* bodyA = bodyVector[i];
+			MultiBody* bodyA = multiVector[i];
 			FlatAABB bodyA_aabb = bodyA->GetAABB();
-			for (int j = i + 1; j < bodyVector.size(); j++)
+			for (int j = i + 1; j < multiVector.size(); j++)
 			{
-				FlatBody* bodyB = bodyVector[j];
+				MultiBody* bodyB = multiVector[j];
 				FlatAABB bodyB_aabb = bodyB->GetAABB();
 				if (bodyA->IsStatic && bodyB->IsStatic)
 				{
@@ -152,36 +152,42 @@ namespace FlatPhysics
 	{
 		for (auto& pair : contactPairs)
 		{
-			FlatBody* bodyA = bodyVector[pair.first];
-			FlatBody* bodyB = bodyVector[pair.second];
+			MultiBody* bodyA = multiVector[pair.first];
+			MultiBody* bodyB = multiVector[pair.second];
 
 			FlatVector normal;
 			float depth;
 			
-			
-			if (Collisions::Collide(bodyA, bodyB, normal, depth))
+			for (auto& subBodyA : bodyA->subBodies)
 			{
-				
-				SeperateBodies(bodyA, bodyB, normal * depth);
+				for (auto& subBodyB : bodyB->subBodies)
+				{
+					if (Collisions::Collide(subBodyA, subBodyB, normal, depth))
+					{
 
-				FlatVector contact1;
-				FlatVector contact2;
-				int contactCount;
-				Collisions::FindContactPoints(bodyA, bodyB, contact1, contact2, contactCount);
+						SeperateBodies(bodyA, bodyB, normal * depth);
 
-				FlatManifold* contact = new FlatManifold(
-					bodyA, bodyB, normal, depth,
-					contact1, contact2, contactCount);
-				
-				ResolveCollisionWithRotationAndFriction(*contact);
+						FlatVector contact1;
+						FlatVector contact2;
+						int contactCount;
+						Collisions::FindContactPoints(subBodyA, subBodyB, contact1, contact2, contactCount);
+
+						FlatManifold* contact = new FlatManifold(
+							bodyA, bodyB, normal, depth,
+							contact1, contact2, contactCount);
+
+						ResolveCollisionWithRotationAndFriction(*contact);
+					}
+				}
 			}
+			
 		}
 	}
 
 	
 	void FlatWorld::StepBodies(float time, int totalIterations)
 	{
-		for (auto& body : bodyVector)
+		for (auto& body : multiVector)
 		{
 			body->Step(time, gravity, totalIterations);
 		}
@@ -190,8 +196,8 @@ namespace FlatPhysics
 
 	void FlatWorld::ResolveCollisionBasic(const FlatManifold& contact)
 	{
-		FlatBody* bodyA = contact.BodyA;
-		FlatBody* bodyB = contact.BodyB;
+		MultiBody* bodyA = contact.BodyA;
+		MultiBody* bodyB = contact.BodyB;
 		FlatVector normal = contact.Normal;
 		float depth = contact.Depth;
 
@@ -215,8 +221,8 @@ namespace FlatPhysics
 
 	void FlatWorld::ResolveCollisionWithRotation(const FlatManifold& contact)
 	{
-		FlatBody* bodyA = contact.BodyA;
-		FlatBody* bodyB = contact.BodyB;
+		MultiBody* bodyA = contact.BodyA;
+		MultiBody* bodyB = contact.BodyB;
 		FlatVector normal = contact.Normal;
 		FlatVector contact1 = contact.Contact1;
 		FlatVector contact2 = contact.Contact2;
@@ -292,8 +298,8 @@ namespace FlatPhysics
 
 	void FlatWorld::ResolveCollisionWithRotationAndFriction(const FlatManifold& contact)
 	{
-		FlatBody* bodyA = contact.BodyA;
-		FlatBody* bodyB = contact.BodyB;
+		MultiBody* bodyA = contact.BodyA;
+		MultiBody* bodyB = contact.BodyB;
 		FlatVector normal = contact.Normal;
 		FlatVector contact1 = contact.Contact1;
 		FlatVector contact2 = contact.Contact2;

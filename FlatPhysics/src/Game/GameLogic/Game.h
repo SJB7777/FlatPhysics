@@ -52,7 +52,7 @@ private:
 	std::vector<FlatEntity*> entityRemovalVector;
 	
 	FlatWorld world{ {0, 98.1} };
-	
+	std::vector<Vector2> vertexBuffer;
 
 	
 };

@@ -58,7 +58,7 @@ namespace FlatPhysics {
 		void NarrowPhase();
 		void StepBodies(float time, int totalIterations);
 
-		void SeperateBodies(FlatBody* bodyA, FlatBody* bodyB, const FlatVector& mtv);
+		void SeperateBodies(MultiBody* bodyA, MultiBody* bodyB, const FlatVector& mtv);
 	public:
 		void ResolveCollisionBasic(const FlatManifold& contact);
 

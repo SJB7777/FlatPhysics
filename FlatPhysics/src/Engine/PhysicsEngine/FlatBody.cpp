@@ -4,6 +4,7 @@ namespace FlatPhysics
 {
 	FlatVector FlatBody::GetPosition() const 
 	{
+		
 		return position;
 	}
 
@@ -443,19 +444,19 @@ namespace FlatPhysics
 			points.emplace_back(vertices[triangles[i]]);
 			points.emplace_back(vertices[triangles[i + 1]]);
 			points.emplace_back(vertices[triangles[i + 2]]);
-			FlatBody body;
-			FlatBody::CreatePolygonBody(points, density, isStatic, restitution, body, errorMessage);
-			subBodies.emplace_back(&body);
+			FlatBody* body = new FlatBody();
+			FlatBody::CreatePolygonBody(points, density, isStatic, restitution, *body, errorMessage);
+			subBodies.push_back(body);
 		}
 
 		multiBody = MultiBody(subBodies, density, mass, inertia, restitution, area, isStatic, vertices);
 		return true;
 	}
 
-	void MultiBody::CreateSingleBody(FlatBody& body, MultiBody& multiBody)
+	void MultiBody::CreateSingleBody(FlatBody& body, MultiBody& multibody)
 	{
 		std::vector<FlatBody*> subBodies = { &body };
-		multiBody = MultiBody(subBodies, body.Density, body.Mass, body.Inertia, body.Restitution, body.Area, body.IsStatic, body.vertices);
+		multibody = MultiBody(subBodies, body.Density, body.Mass, body.Inertia, body.Restitution, body.Area, body.IsStatic, body.vertices);
 	}
 
 	FlatAABB MultiBody::GetAABB()
@@ -529,6 +530,10 @@ namespace FlatPhysics
 
 	void MultiBody::MoveTo(const FlatVector& position)
 	{
+		for (auto& body : subBodies)
+		{
+			body->MoveTo(position);
+		}
 		this->position = position;
 		transformUpdateRequired = true;
 		aabbUpdateRequired = true;
@@ -551,6 +556,10 @@ namespace FlatPhysics
 
 	void MultiBody::RotateTo(float amount)
 	{
+		for (auto& body : subBodies)
+		{
+			body->RotateTo(amount);
+		}
 		angle = amount;
 
 		transformUpdateRequired = true;

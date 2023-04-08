@@ -3,7 +3,7 @@
 namespace FlatPhysics
 {
 	FlatManifold::FlatManifold(
-		FlatBody* bodyA, FlatBody* bodyB,
+		MultiBody* bodyA, MultiBody* bodyB,
 		const FlatVector& normal, float depth,
 		const FlatVector& contact1, const FlatVector& contact2, int contactCount) :
 		BodyA(bodyA), BodyB(bodyB), Normal(normal), Depth(depth),

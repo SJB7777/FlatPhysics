@@ -102,10 +102,12 @@ namespace FlatPhysics {
 	class MultiBody
 	{
 	public:
+		FlatVector GetPosition() const { return position; }
 		FlatVector position;
 		float angle;
 
 		std::vector<FlatBody*> subBodies;
+		
 		MultiBody() {};
 		MultiBody(const std::vector<FlatBody*>& subBodies, float density,
 			float mass, float inertia, float restitution, float area,
@@ -135,7 +137,7 @@ namespace FlatPhysics {
 	
 
 
-		ShapeType shapeType;
+		
 		float Density;
 		float Mass;
 		float InvMass;
@@ -144,9 +146,7 @@ namespace FlatPhysics {
 		float Inertia;
 		float InvInertia;
 		bool IsStatic;
-		float Radius;
-		float Width;
-		float Height;
+		
 		float StaticFriction;
 		float DynamicFriction;
 

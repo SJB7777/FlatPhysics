@@ -27,21 +27,28 @@ void Game::Setting() {
         throw std::invalid_argument(errorMessage);
     }
     groundBody->MoveTo({ 0, 100.0f });
-    world.AddBody(groundBody);
-    entityVector.push_back(new FlatEntity(groundBody, DARKGREEN));
+    MultiBody* groundM = new MultiBody();
+    MultiBody::CreateSingleBody(*groundBody, *groundM);
+    world.AddBody(groundM);
+    entityVector.push_back(new FlatEntity(groundM, DARKGREEN));
     
     
 
     FlatBody* ledgeBody1 = new FlatBody();
     if (!FlatBody::CreateBoxBody(200.0f, 20.0f, 1.0f, 
-        true, 0.5f, *ledgeBody1, errorMessage))
+        false, 0.5f, *ledgeBody1, errorMessage))
     {
         throw std::invalid_argument(errorMessage);
     }
     ledgeBody1->MoveTo({ -100.0f, -30.0f });
     ledgeBody1->Rotate(PI / 10.0f);
-    world.AddBody(ledgeBody1);
-    entityVector.push_back(new FlatEntity(ledgeBody1, DARKGRAY));
+    MultiBody* ledgeM1 = new MultiBody();
+    MultiBody::CreateSingleBody(*ledgeBody1, *ledgeM1);
+    
+    entityVector.push_back(new FlatEntity(ledgeM1, DARKGRAY));
+    world.AddBody(ledgeM1);
+    
+    //entityVector.push_back(new FlatEntity(ledgeBody1, DARKGRAY));
     
     
 
@@ -62,16 +69,9 @@ void Game::Setting() {
         {-30.0f, -30.0f},
         {-30.0f, 30.0f}
     };
-    FlatBody* polygon = new FlatBody();
-    if (!FlatBody::CreatePolygonBody(vertices, 1.0f,
-        false, 0.5f, *polygon, errorMessage))
-    {
-        throw std::invalid_argument(errorMessage);
-    }
-    polygon->MoveTo({ 100.0f, -100.0f });
-    polygon->Rotate(-PI / 10.0f);
-    world.AddBody(polygon);
-    entityVector.push_back(new FlatEntity(polygon, BROWN));
+
+    entityVector.push_back(new FlatEntity(world, vertices, false, { 100.0f, -100.0f }, BLUE));
+    
     
 }
 
@@ -150,7 +150,7 @@ void Game::Update(float deltaTime) {
 
     entityRemovalVector.clear();
 
-    for (int i = 0; i < world.BodyCount(); i++)
+    /*for (int i = 0; i < world.BodyCount(); i++)
     {
         FlatEntity* entity = entityVector[i];
         FlatBody* body = entity->GetBody();
@@ -171,14 +171,14 @@ void Game::Update(float deltaTime) {
         {
             entityRemovalVector.push_back(entity);
         }
-    }
+    }*/
 
-    for (int i = 0; i < entityRemovalVector.size(); i++)
+    /*for (int i = 0; i < entityRemovalVector.size(); i++)
     {
         FlatEntity* entity = entityRemovalVector[i];
         world.RemoveBody(entity->GetBody());
         entityVector.erase(remove(entityVector.begin(), entityVector.end(), entity), entityVector.end());
-    }
+    }*/
     
 }
 
@@ -190,6 +190,8 @@ void Game::Draw(float deltaTime) {
     {
         entityVector[i]->Draw();
     }
+
+    
 
     
     

@@ -7,8 +7,8 @@ namespace FlatPhysics
 
 	struct FlatManifold
 	{
-		FlatBody* BodyA;
-		FlatBody* BodyB;
+		MultiBody* BodyA;
+		MultiBody* BodyB;
 		FlatVector Normal;
 		float Depth;
 		FlatVector Contact1;
@@ -18,7 +18,7 @@ namespace FlatPhysics
 		FlatManifold() {}
 
 		FlatManifold(
-			FlatBody* bodyA, FlatBody* bodyB,
+			MultiBody* bodyA, MultiBody* bodyB,
 			const FlatVector& normal, float depth,
 			const FlatVector& contact1, const FlatVector& contact2, int contactCount);
 		
