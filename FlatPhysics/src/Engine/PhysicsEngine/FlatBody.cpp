@@ -275,5 +275,87 @@ namespace FlatPhysics
 		return true;
 	}
 
+	bool FlatBody::CreatePolygonBody(std::vector<FlatVector>& vertices, float density, bool isStatic, float restitution, FlatBody& body, std::string& errorMessage)
+	{
+		errorMessage = { 0 };
+
+		restitution = FlatMath::Clamp(restitution, 0.0f, 1.0f);
+
+		float area = 0.0f;
+		
+		FlatVector c = FlatVector::Zero(); // centroid
+			
+		float inertia = 0.0f;
+		const float inv3 = 1.0f / 3.0f;
+
+		for (int i = 0; i < vertices.size(); ++i)
+		{
+			FlatVector p1 = vertices[i];
+			FlatVector p2 = vertices[(i + 1) % vertices.size()];
+
+			float D = FlatMath::Cross(p2, p1);
+			float triangleArea = 0.5f * D;
+
+			area += triangleArea;
+
+			// Use area to weight the centroid average, not just vertex position
+			c += triangleArea * inv3 * (p1 + p2);
+
+			float intx2 = p1.x * p1.x + p2.x * p1.x + p2.x * p2.x;
+			float inty2 = p1.y * p1.y + p2.y * p1.y + p2.y * p2.y;
+
+			inertia += (0.25f * inv3 * D) * (intx2 + inty2);
+		}
+
+		if (area < 0.0f)
+		{
+			area = -area;
+			inertia = -inertia;
+		}
+		
+
+		if (area < FlatConstants::MinBodySize) {
+			errorMessage = "Area is too small. Min area is " + std::to_string(FlatConstants::MinBodySize) + ".";
+			return false;
+		}
+
+		if (area > FlatConstants::MaxBodySize) {
+			errorMessage = "Area is too large. Max area area is " + std::to_string(FlatConstants::MaxBodySize) + ".";
+			return false;
+		}
+
+		if (density < FlatConstants::MinDensity) {
+			errorMessage = "Density radius is too small. Min density area is " + std::to_string(FlatConstants::MinDensity) + ".";
+			return false;
+		}
+
+		if (density > FlatConstants::MaxDensity) {
+			errorMessage = "Density radius is too large. Min density area is " + std::to_string(FlatConstants::MaxDensity) + ".";
+			return false;
+		}
+
+		c *= 1.0f / area;
+
+		// Translate vertices to centroid (make the centroid (0, 0)
+		for (int i = 0; i < vertices.size(); ++i)
+		{
+			vertices[i] -= c;
+		}
+
+		float mass = density * area;
+		
+		if (isStatic)
+		{
+			mass = 0.0f;
+			inertia = 0.0f;
+		}
+		
+
+		
+		body = FlatBody(density, mass, inertia, restitution, area, isStatic, 0.0f, 0.0f, 0.0f, vertices, ShapeType::Box);
+		return true;
+	}
+
+	
 	
 }

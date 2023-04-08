@@ -75,6 +75,9 @@
     <ClInclude Include="src\Engine\PhysicsEngine\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\PhysicsEngine\PolygonHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\PhysicsEngine\FlatVector.cpp">

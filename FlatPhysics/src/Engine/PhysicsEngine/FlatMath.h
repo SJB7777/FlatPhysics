@@ -4,16 +4,16 @@
 #include <iostream>
 #include <stdexcept>
 #include <cmath>
+#include <vector>
 #include "FlatVector.h"
 
 namespace FlatPhysics {
 	class FlatMath
 	{
 	private:
-		/// <summary>
-		/// Equal to 1/2 of a millimeter.
-		/// </summary>
-		/// <returns></returns>
+		
+		// Equal to 1/2 of a millimeter.
+		
 		static float VerySmallAmount() { return 0.0005f; }
 	public:
 		static int Clamp(int value, int min, int max)
@@ -109,6 +109,20 @@ namespace FlatPhysics {
 		static FlatVector Perpendicular(const FlatVector& v) {
 			
 			return FlatVector(-v.y, v.x);
+		}
+
+		template <typename T>
+		static T GetItem(const std::vector<T>& v, int index)
+		{
+			if (index >= v.size())
+			{
+				return v[index % v.size()];
+			}
+			if (index < 0)
+			{
+				return v[index % v.size() + v.size()];
+			}
+			return v[index];
 		}
 	};
 	

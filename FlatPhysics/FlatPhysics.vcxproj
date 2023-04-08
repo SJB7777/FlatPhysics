@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\PhysicsEngine\PolygonHelper.h" />
     <ClInclude Include="src\Engine\PhysicsEngine\Timer.h" />
     <ClInclude Include="src\Engine\GameEngine.h" />
     <ClInclude Include="src\Engine\GameEngine\FlatEntity.h" />

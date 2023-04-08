@@ -32,9 +32,9 @@ void Game::Setting() {
     
     
 
-   /* FlatBody* ledgeBody1 = new FlatBody();
+    FlatBody* ledgeBody1 = new FlatBody();
     if (!FlatBody::CreateBoxBody(200.0f, 20.0f, 1.0f, 
-        true, 0.5f, *ledgeBody1, errorMessage))
+        false, 0.5f, *ledgeBody1, errorMessage))
     {
         throw std::invalid_argument(errorMessage);
     }
@@ -45,7 +45,7 @@ void Game::Setting() {
     
     
 
-    FlatBody* ledgeBody2 = new FlatBody();
+    /*FlatBody* ledgeBody2 = new FlatBody();
     if (!FlatBody::CreateBoxBody(150.0f, 20.0f, 1.0f, 
         true, 0.5f, *ledgeBody2, errorMessage))
     {
@@ -56,15 +56,30 @@ void Game::Setting() {
     world.AddBody(ledgeBody2);
     entityVector.push_back(new FlatEntity(ledgeBody2, BROWN));*/
     
-    
-
+    std::vector<FlatVector> vertices = {
+        {30.0f, 30.0f},
+        {30.0f, -30.0f},
+        {-30.0f, -30.0f},
+        {-30.0f, 30.0f}
+    };
+    FlatBody* polygon = new FlatBody();
+    if (!FlatBody::CreatePolygonBody(vertices, 1.0f,
+        false, 0.5f, *polygon, errorMessage))
+    {
+        throw std::invalid_argument(errorMessage);
+    }
+    polygon->MoveTo({ 100.0f, -100.0f });
+    polygon->Rotate(-PI / 10.0f);
+    world.AddBody(polygon);
+    entityVector.push_back(new FlatEntity(polygon, BROWN));
     
 }
 
 
 
 void Game::Update(float deltaTime) {
-
+    
+    
     // camera move
     camera.camera.zoom += ((float)GetMouseWheelMove() * camera.zoomSpeed);
 
@@ -129,6 +144,7 @@ void Game::Update(float deltaTime) {
     double startTime = GetTime();
     world.Step(deltaTime, 10);
     stepTime = GetTime() - startTime;
+
     CameraExtents extents = camera.GetExtents();
     float viewBottom = extents.top;
 

@@ -19,7 +19,8 @@ namespace FlatPhysics {
 
 	enum class ShapeType {
 		Circle = 0,
-		Box = 1
+		Box = 1,
+		
 	};
 
 
@@ -73,7 +74,6 @@ namespace FlatPhysics {
 			const std::vector<FlatVector>& vertices, ShapeType shapeType);
 	private:
 
-		//std::vector<int> CreateBoxTriangles();
 		
 		static std::vector<FlatVector> CreateBoxVertices(float width, float height);
 
@@ -98,7 +98,9 @@ namespace FlatPhysics {
 
 		static bool CreateBoxBody(float width, float height, float density, bool isStatic, float restitution, FlatBody& body, std::string& errorMessage);
 
-		
+		static bool CreatePolygonBody(std::vector<FlatVector>& vertices, float density, bool isStatic, float restitution, FlatBody& body, std::string& errorMessage);
+
+	
 	};
 
 }
