@@ -31,21 +31,25 @@ namespace FlatPhysics {
 	public:
 		
 		std::vector<FlatBody*> bodyVector;
-
+		std::vector<MultiBody*> multiVector;
 		FlatWorld(const FlatVector& gravity);
 		~FlatWorld();
 
-		int BodyCount();
+		/*int BodyCount();
 
 		void AddBody(FlatBody* body);
 
-		
-
 		void RemoveBody(FlatBody* body);
 
-		
+		bool GetBody(int index, FlatBody* &body);*/
 
-		bool GetBody(int index, FlatBody* &body);
+		int BodyCount();
+
+		void AddBody(MultiBody* body);
+
+		void RemoveBody(MultiBody* body);
+
+		bool GetBody(int index, MultiBody*& body);
 
 		void Step(float time, int iterations);
 		void TestStep(float time, int iterations);

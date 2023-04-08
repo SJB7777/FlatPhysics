@@ -17,7 +17,7 @@ namespace FlatPhysics
 		}
 	}
 
-	int FlatWorld::BodyCount()
+	/*int FlatWorld::BodyCount()
 	{
 		return bodyVector.size();
 	}
@@ -35,17 +35,42 @@ namespace FlatPhysics
 		
 	}
 
-	
-	
-
 	bool FlatWorld::GetBody(int index, FlatBody*& body)
 	{
-		
+
 		if (index < 0 || index >= bodyVector.size())
 		{
 			return false;
 		}
 		body = bodyVector[index];
+		return true;
+	}*/
+	int FlatWorld::BodyCount()
+	{
+		return multiVector.size();
+	}
+
+	void FlatWorld::AddBody(MultiBody* body)
+	{
+		multiVector.push_back(body);
+
+	}
+
+	void FlatWorld::RemoveBody(MultiBody* body)
+	{
+
+		multiVector.erase(remove(multiVector.begin(), multiVector.end(), body), multiVector.end());
+
+	}
+
+	bool FlatWorld::GetBody(int index, MultiBody*& body)
+	{
+		
+		if (index < 0 || index >= multiVector.size())
+		{
+			return false;
+		}
+		body = multiVector[index];
 		return true;
 	}
 
