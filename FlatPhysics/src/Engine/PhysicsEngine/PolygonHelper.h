@@ -11,7 +11,7 @@ namespace FlatPhysics
 	enum WindingOrder;
 	class PolygonHelper
 	{
-
+	public:
 		static bool Triangulate(const std::vector<FlatVector>& vertices, std::vector<int>& triangles, std::string& errorMessage)
 		{
 			errorMessage.clear();

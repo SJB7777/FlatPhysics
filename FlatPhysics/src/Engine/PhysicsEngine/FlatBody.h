@@ -15,7 +15,7 @@
 
 namespace FlatPhysics {
 	
-	//class FlatWorld;
+	
 
 	enum class ShapeType {
 		Circle = 0,

@@ -63,7 +63,11 @@ void FlatEntity::Draw()
 		std::vector<FlatVector> vertices = body->GetTransformedVertices();
 		FlatConverter::ToVector2Array(vertices, vertexBuffer);
 
-		DrawTriangleFan(vertexBuffer.data(), vertexBuffer.size(), color);
+		
+		std::vector<int> triangles;
+		std::string errorMessage;
+		PolygonHelper::Triangulate(vertices, triangles, errorMessage);
+		GameDraw::DrawPolygonFill(vertexBuffer, triangles, color);
 		GameDraw::DrawPolygonLines(vertexBuffer, 0.7f, WHITE);
 	}
 }

@@ -34,7 +34,7 @@ void Game::Setting() {
 
     FlatBody* ledgeBody1 = new FlatBody();
     if (!FlatBody::CreateBoxBody(200.0f, 20.0f, 1.0f, 
-        false, 0.5f, *ledgeBody1, errorMessage))
+        true, 0.5f, *ledgeBody1, errorMessage))
     {
         throw std::invalid_argument(errorMessage);
     }
@@ -58,7 +58,7 @@ void Game::Setting() {
     
     std::vector<FlatVector> vertices = {
         {30.0f, 30.0f},
-        {30.0f, -30.0f},
+        {-20.0f, 20.0f},
         {-30.0f, -30.0f},
         {-30.0f, 30.0f}
     };

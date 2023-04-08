@@ -37,7 +37,7 @@ public:
 
 class GameDraw {
 public:
-	static void DrawPolygonLines(const std::vector<Vector2> points, float thick, Color color)
+	static void DrawPolygonLines(const std::vector<Vector2>& points, float thick, const Color& color)
 	{
 
 		for (int i = 0; i < points.size(); i++)
@@ -45,5 +45,17 @@ public:
 			DrawLineEx(points[i], points[(i + 1) % points.size()], thick, color);
 		}
 
+	}
+	static void DrawPolygonFill(const std::vector<Vector2>& points, const std::vector<int>& triangleIndices, const Color& color)
+	{
+		if (points.size() < 3)
+		{
+			throw "Need 3 or more vertices.";
+		}
+
+		for (int i = 0; i < triangleIndices.size(); i += 3)
+		{
+			DrawTriangle(points[triangleIndices[i]], points[triangleIndices[i + 1]], points[triangleIndices[i + 2]], color);
+		}
 	}
 };
