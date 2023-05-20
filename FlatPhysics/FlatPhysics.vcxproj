@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\GameEngine\Screen.h" />
     <ClInclude Include="src\Engine\PhysicsEngine\PolygonHelper.h" />
     <ClInclude Include="src\Engine\PhysicsEngine\Timer.h" />
     <ClInclude Include="src\Engine\GameEngine.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="src\Engine\PhysicsEngine\FlatWorld.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\GameEngine\Screen.cpp" />
     <ClCompile Include="src\Game\GameLogic\Game.cpp" />
     <ClCompile Include="src\Engine\GameEngine\FlatEntity.cpp" />
     <ClCompile Include="src\Game\Application.cpp" />
@@ -52,6 +54,7 @@
     <ClCompile Include="src\Engine\PhysicsEngine\FlatTransform.cpp" />
     <ClCompile Include="src\Engine\PhysicsEngine\FlatVector.cpp" />
     <ClCompile Include="src\Engine\PhysicsEngine\FlatWorld.cpp" />
+    <ClCompile Include="src\Game\GameLogic\mob.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

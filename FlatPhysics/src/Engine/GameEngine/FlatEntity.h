@@ -19,7 +19,7 @@ public:
 	FlatEntity(MultiBody* body);
 	FlatEntity(MultiBody* body, const Color& color);
 	FlatEntity(FlatWorld& world, float radius, bool isStatic, const FlatVector& position);
-	FlatEntity(FlatWorld& world, float width, float height, bool isStatic, const FlatVector& position);
+	FlatEntity(FlatWorld& world, float width, float height, bool isStatic, const FlatVector& position, Color color);
 	FlatEntity(FlatWorld& world, std::vector<FlatVector>& vertices, bool isStatic, const FlatVector& position, Color color);
 	void Draw();
 

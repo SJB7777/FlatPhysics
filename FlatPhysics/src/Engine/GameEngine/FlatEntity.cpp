@@ -26,8 +26,8 @@ FlatEntity::FlatEntity(FlatWorld& world, float radius, bool isStatic, const Flat
 	world.AddBody(this->multiBody);
 }
 
-FlatEntity::FlatEntity(FlatWorld& world, float width, float height, bool isStatic, const FlatVector& position) :
-	color(RandomHelper::RandomColor())
+FlatEntity::FlatEntity(FlatWorld& world, float width, float height, bool isStatic, const FlatVector& position, Color color) :
+	color(color)
 {
 	FlatBody* body = new FlatBody();
 	std::string errorMessage;

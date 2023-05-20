@@ -4,6 +4,7 @@
 
 int main(int argc, char** argv)
 {
+	ApplicationState = ApplicationStates::Running;
 	Game game;
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Game");
@@ -14,12 +15,31 @@ int main(int argc, char** argv)
 
 	while (!WindowShouldClose()) {
 		float time = GetFrameTime();
-		game.Update(time);
+		
+
+		switch (ApplicationState)
+		{
+		case ApplicationStates::Loading:
+			game.UpdateLoad();
+			break;
+		case ApplicationStates::Menu:
+			game.UpdateMainMenu();
+			break;
+		case ApplicationStates::Running:
+			game.UpdateGame(time);
+			break;
+		case ApplicationStates::Paused:
+			game.UpdatePaused();
+			break;
+		case ApplicationStates::GameOver:
+			game.UpdateGameOver();
+			break;
+		}
 
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
 
-		game.Draw(time);
+			game.Draw(time);
 
 		EndDrawing();
 	}
