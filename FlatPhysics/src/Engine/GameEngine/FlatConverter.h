@@ -58,4 +58,8 @@ public:
 			DrawTriangle(points[triangleIndices[i]], points[triangleIndices[i + 1]], points[triangleIndices[i + 2]], color);
 		}
 	}
+	static void DrawLine(const FlatVector& startPos, const FlatVector& endPos, float thick, const Color& color)
+	{
+		DrawLineEx({ startPos.x, startPos.y }, { endPos.x, endPos.y }, thick, color);
+	}
 };

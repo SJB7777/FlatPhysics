@@ -9,8 +9,8 @@ FlatEntity::FlatEntity(MultiBody* body) :
 FlatEntity::FlatEntity(MultiBody* body, const Color& color) :
 	multiBody(body), color(color) {}
 
-FlatEntity::FlatEntity(FlatWorld& world, float radius, bool isStatic, const FlatVector& position) :
-	color(RandomHelper::RandomColor())
+FlatEntity::FlatEntity(FlatWorld& world, float radius, bool isStatic, const Color& color, const FlatVector& position) :
+	color(color)
 {
 	FlatBody* body = new FlatBody();
 	std::string errorMessage;
@@ -26,7 +26,7 @@ FlatEntity::FlatEntity(FlatWorld& world, float radius, bool isStatic, const Flat
 	world.AddBody(this->multiBody);
 }
 
-FlatEntity::FlatEntity(FlatWorld& world, float width, float height, bool isStatic, const FlatVector& position, Color color) :
+FlatEntity::FlatEntity(FlatWorld& world, float width, float height, bool isStatic, const Color& color, const FlatVector& position) :
 	color(color)
 {
 	FlatBody* body = new FlatBody();
@@ -44,7 +44,7 @@ FlatEntity::FlatEntity(FlatWorld& world, float width, float height, bool isStati
 	world.AddBody(this->multiBody);
 }
 
-FlatEntity::FlatEntity(FlatWorld& world, std::vector<FlatVector>& vertices, bool isStatic, const FlatVector& position, Color color) :
+FlatEntity::FlatEntity(FlatWorld& world, std::vector<FlatVector>& vertices, bool isStatic, const Color& color, const FlatVector& position) :
 	color(color)
 {
 	std::string errorMessage;
@@ -91,4 +91,26 @@ void FlatEntity::Draw()
 		}
 	}
 	
+}
+
+FlatVector FlatEntity::GetPosition()
+{
+	return multiBody->GetPosition();
+}
+
+
+
+void FlatEntity::MoveTo(const FlatVector& amount)
+{
+	multiBody->MoveTo(amount);
+}
+
+void FlatEntity::AddForce(const FlatVector& force)
+{
+	multiBody->AddForce(force);
+}
+
+void FlatEntity::ToggleIsStatic()
+{
+	multiBody->IsStatic = !multiBody->IsStatic;
 }

@@ -116,8 +116,5 @@
     <ClCompile Include="src\Engine\GameEngine\Screen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\GameLogic\mob.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

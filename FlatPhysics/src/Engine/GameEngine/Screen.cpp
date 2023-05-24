@@ -52,6 +52,6 @@ void Button::draw() {
 
 	DrawRectangleRounded(top_rect, 12, 100, top_color);
 	
-	Vector2 StringSize = MeasureTextEx(font, text, fontSize, 0);
-	DrawTextEx(font, text, { top_rect.x + top_rect.width / 2 - StringSize.x / 2, top_rect.y + top_rect.height / 2 + StringSize.y / 2 }, fontSize, 0, text_color);
+	Vector2 StringSize = MeasureTextEx(font, text, fontSize, 3);
+	DrawTextEx(font, text, { top_rect.x + top_rect.width / 2 - StringSize.x / 2, top_rect.y + top_rect.height / 2 - StringSize.y / 2 }, fontSize, 3, text_color);
 }

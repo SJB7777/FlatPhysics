@@ -2,7 +2,7 @@
 #include "Common.h"
 namespace Screen
 {
-	void DimScreen(float alpha = 0.75f);
+	void DimScreen(float alpha = 0.5f);
 
 }
 

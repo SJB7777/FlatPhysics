@@ -113,8 +113,8 @@ namespace FlatPhysics {
 			float mass, float inertia, float restitution, float area,
 			bool isStatic, const std::vector<FlatVector>& vertices) : 
 			subBodies(subBodies), position(FlatVector::Zero()), LinearVelocity(FlatVector::Zero()), angle(0.0f), AngularVelocity(0.0f),
-			Density(density), Mass(mass), InvMass(mass > 0.0f ? 1.0f / mass : 0.0f),
-			Inertia(inertia), InvInertia(inertia > 0.0f ? 1.0f / inertia : 0.0f), Restitution(restitution), Area(area),
+			Density(density), Mass(mass), InvMass(Mass > 0.0f ? 1.0f / Mass : 0.0f),
+			Inertia(inertia), InvInertia(Inertia > 0.0f ? 1.0f / Inertia : 0.0f), Restitution(restitution), Area(area),
 			IsStatic(isStatic), transformUpdateRequired(true), aabbUpdateRequired(true), StaticFriction(0.6f), DynamicFriction(0.4f)
 		{}
 

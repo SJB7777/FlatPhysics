@@ -22,6 +22,32 @@ struct CameraManager {
 	CameraExtents GetExtents();
 };
 
+class Cannon
+{
+public:
+	Cannon(FlatWorld& world, float radius)
+	{
+		cannon = new FlatEntity(world, radius, false, RAYWHITE, origin);
+		cannon->GetBody()->IsStatic = true;
+	}
+	FlatVector origin = { -250.0f, 100.0f };
+	FlatEntity* cannon = new FlatEntity();
+	FlatVector displacement = FlatVector::Zero();
+	FlatVector GetDisplacement()
+	{
+		return cannon->GetPosition() - origin;
+	}
+	void DrawSlingshot()
+	{
+		FlatVector endPos = cannon->GetPosition();
+		displacement = endPos - origin;
+		float thick = sqrt(100.0f / FlatMath::Length(displacement));
+		GameDraw::DrawLine(origin, endPos, thick, BROWN);
+	}
+	FlatEntity* GetEntity() { return cannon; }
+	bool isClicked = false;
+};
+
 class Game
 {
 public:
@@ -61,6 +87,10 @@ private:
 	Button Btn;
 	void run() { ApplicationState = ApplicationStates::Running; }
 	void pause() { ApplicationState = ApplicationStates::Paused; }
+
+	
+	FlatVector cannonOrigin = { -250.0f, 150.0f };
+	Cannon* cannon = new Cannon(world, 10.0f);
 };
 
 

@@ -19,27 +19,18 @@ void Game::Setting() {
     
     float padding = (CameraExtent.right - CameraExtent.left) * 0.1f;
     
-    FlatBody* groundBody = new FlatBody();
-
-    if (!FlatBody::CreateBoxBody(CameraExtent.right - CameraExtent.left - padding * 2, 30.0f, 1.0f, 
-        true, 0.5f, *groundBody, errorMessage))
-    {
-        throw std::invalid_argument(errorMessage);
-    }
-    groundBody->MoveTo({ 0, 100.0f });
-    MultiBody* groundM = new MultiBody();
-    MultiBody::CreateSingleBody(*groundBody, *groundM);
-    world.AddBody(groundM);
-    entityVector.push_back(new FlatEntity(groundM, DARKGREEN));
     
-    entityVector.push_back(new FlatEntity(world, 30, 250, true, { 0, -30 }, GRAY));
+    
+    entityVector.push_back(new FlatEntity(world, CameraExtent.right - CameraExtent.left, 30, true, DARKGREEN, { 0, 200 }));
+    entityVector.push_back(new FlatEntity(world, 30, 270, true, GRAY, { 0, 50 }));
 
-    FlatEntity* entity = new FlatEntity(world, 30, 30, false, { 0, -30 }, GRAY);
-    entity->GetBody()->AddForce({ 1000, 0 });
+    
+    
+    
 
     Btn.SetButton("button", 300, 50, 20);
     Btn.SetPosition(100, 100);
-    
+    entityVector.push_back(cannon->GetEntity());
 }
 
 void Game::UpdateLoad()
@@ -58,23 +49,28 @@ void Game::UpdateGame(float deltaTime) {
     else if (camera.camera.zoom < 0.01f) camera.camera.zoom = 0.01f;
 
     
-    // add circle body
-    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+    if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera.camera), FlatConverter::ToVector2(cannon->origin), 10.0f))
     {
-
-        float radius = RandomHelper::RandomFloat(12.5f, 17.5f);
-
-        FlatVector mouseWorldPosition =
-            FlatConverter::ToFlatVector(GetScreenToWorld2D(GetMousePosition(), camera.camera));
-
-        entityVector.push_back(new FlatEntity(world, radius, false, mouseWorldPosition));
-
-        
-
-        
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            cannon->isClicked = true;
+        }
     }
-
-
+    if (cannon->isClicked)
+    {
+        cannon->GetEntity()->MoveTo(FlatConverter::ToFlatVector(GetScreenToWorld2D(GetMousePosition(), camera.camera)));
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            cannon->isClicked = false;
+            cannon->GetEntity()->GetBody()->IsStatic = false;
+            cannon->GetEntity()->AddForce(cannon->GetDisplacement() * -1000000.0f);
+            printf("%f\n", cannon->GetEntity()->GetBody()->force.y);
+            
+        }
+    }
+    
+    
+        
     if (IsKeyPressed(KEY_T))
     {
         camera.camera.zoom = defaultZoom;
@@ -168,7 +164,10 @@ void Game::Draw(float deltaTime) {
         entityVector[i]->Draw();
     }
 
-    
+    if (cannon->isClicked)
+    {
+        cannon->DrawSlingshot();
+    }
 
     
     

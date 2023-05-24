@@ -267,7 +267,7 @@ namespace FlatPhysics
 
 		if (!isStatic)
 		{
-			mass = area * density;
+			mass = 0.001f * area * density;
 			inertia = (1.0f / 12.0f) * mass * (width * width + height * height);
 		}
 		
@@ -496,8 +496,9 @@ namespace FlatPhysics
 
 		time /= (float)iterations;
 		FlatVector acceration = gravity + force * InvMass;
+		
 		LinearVelocity += acceration * time;
-
+		
 		position += LinearVelocity * time;
 
 
