@@ -37,6 +37,10 @@ void Game::UpdateGameClear()
 {
 }
 
+void Game::DrawGameClear()
+{
+}
+
 
 
 void Game::UpdateGame(float deltaTime) {
@@ -144,15 +148,30 @@ void Game::UpdateMainMenu()
     
 }
 
+void Game::DrawMainMenu()
+{
+
+}
+
 void Game::UpdatePaused()
 {
     Btn.click_connect(this, &Game::run);
     
 }
 
+void Game::DrawPaused()
+{
+    Screen::DimScreen();
+    Btn.draw();
+}
+
 void Game::UpdateGameOver()
 {
     
+}
+
+void Game::DrawGameOver()
+{
 }
 
 void Game::Draw(float deltaTime) {
@@ -174,12 +193,9 @@ void Game::Draw(float deltaTime) {
 
     EndMode2D();
 
-    
-    if (ApplicationState != ApplicationStates::Running)
-    {
-        Screen::DimScreen();
-    }
     Btn.draw();
+    
+    
     DrawText(TextFormat("StepTime : %.4fms", stepTime * 1000), 20, GetScreenHeight() - 30 - 10 - 20 - 20, 20, YELLOW);
     DrawText(TextFormat("BodyCount : %d", world.BodyCount()), 20, GetScreenHeight() - 30 - 10 - 20, 20, YELLOW);
     DrawText(TextFormat("Zoom : %d %%", int(camera.camera.zoom / defaultZoom * 100)), 20, GetScreenHeight() - 30 - 10, 20, YELLOW);

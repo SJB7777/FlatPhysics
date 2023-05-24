@@ -21,27 +21,54 @@ int main(int argc, char** argv)
 		{
 		case ApplicationStates::Menu:
 			game.UpdateMainMenu();
+			BeginDrawing();
+			ClearBackground(SKYBLUE);
+
+				game.DrawMainMenu();
+
+			EndDrawing();
 			break;
 		case ApplicationStates::Running:
 			game.UpdateGame(time);
+			BeginDrawing();
+			ClearBackground(SKYBLUE);
+
+				game.Draw(time);
+
+			EndDrawing();
 			break;
 		case ApplicationStates::Paused:
 			game.UpdatePaused();
+			BeginDrawing();
+			ClearBackground(SKYBLUE);
+
+				
+				game.Draw(time);
+				game.DrawPaused();
+
+			EndDrawing();
 			break;
 		case ApplicationStates::GameOver:
 			game.UpdateGameOver();
+			BeginDrawing();
+			ClearBackground(SKYBLUE);
+
+				game.DrawGameOver();
+
+			EndDrawing();
 			break;
 		case ApplicationStates::GameClear:
 			game.UpdateGameClear();
+			BeginDrawing();
+			ClearBackground(SKYBLUE);
+
+				game.DrawGameClear();
+
+			EndDrawing();
 			break;
 		}
 
-		BeginDrawing();
-		ClearBackground(SKYBLUE);
-
-			game.Draw(time);
-
-		EndDrawing();
+		
 	}
 
 	game.End();

@@ -52,12 +52,22 @@ class Game
 {
 public:
 	void Setting();
-	void UpdateGameClear();
+	
 	void UpdateGame(float time);
-	void UpdateMainMenu();
-	void UpdatePaused();
-	void UpdateGameOver();
 	void Draw(float time);
+
+	void UpdateMainMenu();
+	void DrawMainMenu();
+
+	void UpdatePaused();
+	void DrawPaused();
+
+	void UpdateGameOver();
+	void DrawGameOver();
+
+	void UpdateGameClear();
+	void DrawGameClear();
+
 	void End();
 	
 private:
