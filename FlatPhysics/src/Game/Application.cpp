@@ -19,9 +19,6 @@ int main(int argc, char** argv)
 
 		switch (ApplicationState)
 		{
-		case ApplicationStates::Loading:
-			game.UpdateLoad();
-			break;
 		case ApplicationStates::Menu:
 			game.UpdateMainMenu();
 			break;
@@ -33,6 +30,9 @@ int main(int argc, char** argv)
 			break;
 		case ApplicationStates::GameOver:
 			game.UpdateGameOver();
+			break;
+		case ApplicationStates::GameClear:
+			game.UpdateGameClear();
 			break;
 		}
 

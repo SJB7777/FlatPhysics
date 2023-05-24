@@ -52,7 +52,7 @@ class Game
 {
 public:
 	void Setting();
-	void UpdateLoad();
+	void UpdateGameClear();
 	void UpdateGame(float time);
 	void UpdateMainMenu();
 	void UpdatePaused();

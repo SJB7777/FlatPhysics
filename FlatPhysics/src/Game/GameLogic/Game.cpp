@@ -33,7 +33,7 @@ void Game::Setting() {
     entityVector.push_back(cannon->GetEntity());
 }
 
-void Game::UpdateLoad()
+void Game::UpdateGameClear()
 {
 }
 

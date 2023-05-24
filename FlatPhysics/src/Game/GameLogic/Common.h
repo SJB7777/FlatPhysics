@@ -4,13 +4,11 @@
 #include "..\..\Engine\GameEngine.h"
 
 enum class ApplicationStates {
-	Startup,
-	Loading,
 	Menu,
 	Running,
 	Paused,
 	GameOver,
-	Quiting
+	GameClear
 };
 
 inline ApplicationStates ApplicationState = ApplicationStates::Running;
