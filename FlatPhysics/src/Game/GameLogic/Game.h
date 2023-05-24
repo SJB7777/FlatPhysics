@@ -13,6 +13,7 @@ struct CameraExtents {
 	float right;
 	float bottom;
 	float top;
+	float hi;
 };
 
 struct CameraManager {
