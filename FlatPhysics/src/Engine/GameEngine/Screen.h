@@ -6,6 +6,75 @@ namespace Screen
 
 }
 
+class TextureButton
+{
+public:
+	void SetButton(float width, float height, float x = 0, float y = 0)
+	{
+		this->width = width;
+		this->height = height;
+		this->x = x;
+		this->y = y;
+	}
+		
+	void SetPosition(float x, float y)
+	{
+		this->x = x;
+		this->y = y;
+	}
+	void Draw() {
+		if (pressed)
+		{
+			DrawTexturePro(texture1, { 0, 0, (float)texture1.width, (float)texture1.height }, { x, y, width, height }, { 0.0f, 0.0f }, 0.0f, WHITE);
+		}
+		else
+		{
+			DrawTexturePro(texture2, { 0, 0, (float)texture2.width, (float)texture2.height }, { x, y, width, height }, { 0.0f, 0.0f }, 0.0f, WHITE);
+		}
+	}
+
+	template<class ListenerClass, typename ListenerMethod>
+	void click_connect(ListenerClass* self, ListenerMethod method) 
+	{
+
+		Vector2 mouse_pos = GetMousePosition();
+		if (CheckCollisionPointRec(mouse_pos, rect)) 
+		{
+			
+
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) 
+			{
+				
+				pressed = !pressed;
+
+			}
+			else 
+			{
+				
+				if (pressed) 
+				{
+					
+					(self->*method)();
+					pressed = !pressed;
+				}
+			}
+		}
+		else 
+		{
+			
+
+		}
+
+	}
+
+private:
+	Texture2D texture1;
+	Texture2D texture2;
+	Rectangle rect;
+	bool pressed = false;
+
+	float x, y, width, height;
+};
 
 class Button {
 public:

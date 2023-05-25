@@ -30,7 +30,10 @@ void Game::Setting() {
 
     Btn.SetButton("button", 300, 50, 20);
     Btn.SetPosition(100, 100);
+    cannon = new Cannon(world, 10.0f);
     entityVector.push_back(cannon->GetEntity());
+    
+    
 }
 
 void Game::UpdateGameClear()
@@ -178,16 +181,20 @@ void Game::Draw(float deltaTime) {
 
     BeginMode2D(camera.camera);
 
+    if (cannon->isClicked)
+    {
+        cannon->DrawSlingshot();
+    }
+    cannon->Draw();
+
     for (int i = 0; i < entityVector.size(); i++)
     {
         entityVector[i]->Draw();
     }
 
-    if (cannon->isClicked)
-    {
-        cannon->DrawSlingshot();
-    }
+    
 
+    
     
     
 

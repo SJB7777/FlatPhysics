@@ -25,11 +25,15 @@ struct CameraManager {
 class Cannon
 {
 public:
+	Cannon() {}
 	Cannon(FlatWorld& world, float radius)
 	{
 		cannon = new FlatEntity(world, radius, false, RAYWHITE, origin);
 		cannon->GetBody()->IsStatic = true;
+		
+		texture = LoadTexture("asset/slingshot.png");
 	}
+	Texture texture;
 	FlatVector origin = { -250.0f, 100.0f };
 	FlatEntity* cannon = new FlatEntity();
 	FlatVector displacement = FlatVector::Zero();
@@ -43,6 +47,11 @@ public:
 		displacement = endPos - origin;
 		float thick = sqrt(100.0f / FlatMath::Length(displacement));
 		GameDraw::DrawLine(origin, endPos, thick, BROWN);
+	}
+	void Draw()
+	{
+		DrawTexturePro(texture, { 0, 0, (float)texture.width, (float)texture.height }, { origin.x, origin.y, 50, 100 }, { 15.0f, 15.0f }, 0.0f, WHITE);
+		
 	}
 	FlatEntity* GetEntity() { return cannon; }
 	bool isClicked = false;
@@ -100,7 +109,9 @@ private:
 
 	
 	FlatVector cannonOrigin = { -250.0f, 150.0f };
-	Cannon* cannon = new Cannon(world, 10.0f);
+	Cannon* cannon = new Cannon();
+
+	
 };
 
 
