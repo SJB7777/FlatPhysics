@@ -8,7 +8,9 @@ enum class ApplicationStates {
 	Running,
 	Paused,
 	GameOver,
-	GameClear
+	GameClear,
+	ScoreBoard,
+	Exit
 };
 
 inline ApplicationStates ApplicationState = ApplicationStates::Running;

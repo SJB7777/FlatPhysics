@@ -68,6 +68,9 @@ public:
 	void UpdateGameClear();
 	void DrawGameClear();
 
+	void UpdateScore();
+	void DrawScore();
+
 	void End();
 	
 private:
@@ -94,9 +97,10 @@ private:
 	FlatWorld world{ {0, 98.1} };
 	std::vector<Vector2> vertexBuffer;
 
-	Button Btn;
+	Button Btn,start_btn, exit_btn;
 	void run() { ApplicationState = ApplicationStates::Running; }
 	void pause() { ApplicationState = ApplicationStates::Paused; }
+	void exit() { ApplicationState = ApplicationStates::Exit; }
 
 	
 	FlatVector cannonOrigin = { -250.0f, 150.0f };

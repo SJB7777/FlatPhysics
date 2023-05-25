@@ -31,10 +31,18 @@ void Game::Setting() {
     Btn.SetButton("button", 300, 50, 20);
     Btn.SetPosition(100, 100);
     entityVector.push_back(cannon->GetEntity());
+
+    int HT = WINDOW_HEIGHT, WT = WINDOW_WIDTH;
+
+    ApplicationState = ApplicationStates::Menu;
+    start_btn.SetButton("Start", WT/3, HT/8, 15, 6.0f , WT / 2-WT/6, HT * 3 / 6);
+    exit_btn.SetButton("Exit", WT / 3, HT / 8, 15, 6.0f, WT / 2 - WT / 6, HT * 4 / 6);
 }
 
 void Game::UpdateGameClear()
 {
+
+
 }
 
 void Game::DrawGameClear()
@@ -140,17 +148,23 @@ void Game::UpdateGame(float deltaTime) {
         entityVector.erase(remove(entityVector.begin(), entityVector.end(), entity), entityVector.end());
     }*/
     Btn.click_connect(this, &Game::pause);
+
+
 }
 
 void Game::UpdateMainMenu()
 {
-    
-    
+    start_btn.click_connect(this, &Game::run);
+    exit_btn.click_connect(this, &Game::exit);
 }
 
 void Game::DrawMainMenu()
 {
-
+    start_btn.draw();
+    exit_btn.draw();
+    for (int r = 1; r < 8; r++)
+        for (int c = 1; c < 8; c++)
+            DrawCircle(WINDOW_WIDTH / 8 * r, WINDOW_HEIGHT / 8 * c, 2.0f, BLACK);
 }
 
 void Game::UpdatePaused()
@@ -203,6 +217,6 @@ void Game::Draw(float deltaTime) {
 }
 
 void Game::End() {
-   
+    
 }
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scoreboard.h" />
     <ClInclude Include="src\Engine\GameEngine\Screen.h" />
     <ClInclude Include="src\Engine\PhysicsEngine\PolygonHelper.h" />
     <ClInclude Include="src\Engine\PhysicsEngine\Timer.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="src\Engine\PhysicsEngine\FlatWorld.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scoreboard.cpp" />
     <ClCompile Include="src\Engine\GameEngine\Screen.cpp" />
     <ClCompile Include="src\Game\GameLogic\Game.cpp" />
     <ClCompile Include="src\Engine\GameEngine\FlatEntity.cpp" />
