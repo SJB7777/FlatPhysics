@@ -69,6 +69,8 @@ public:
 	void DrawGameClear();
 
 	void End();
+
+	int hp, left_ball;
 	
 private:
 	double stepTime;
@@ -90,14 +92,14 @@ private:
 	
 	std::vector<FlatEntity*> entityVector;
 	std::vector<FlatEntity*> entityRemovalVector;
-	
+
 	FlatWorld world{ {0, 98.1} };
 	std::vector<Vector2> vertexBuffer;
 
 	Button Btn;
-	Button Btn_Stop_Retry;
-	Button Btn_Stop_Resume;
-	Button Btn_Stop_Mainmenu;
+	Button Btn_Retry;
+	Button Btn_Resume;
+	Button Btn_Mainmenu;
 
 	void run() { ApplicationState = ApplicationStates::Running; }
 	void pause() { ApplicationState = ApplicationStates::Paused; }
@@ -108,7 +110,6 @@ private:
 	Cannon* cannon = new Cannon(world, 10.0f);
 
 	Texture2D texture_start_page;
-	Texture2D texture_target;
 };
 
 

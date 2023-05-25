@@ -19,34 +19,43 @@ void Game::Setting() {
     
     float padding = (CameraExtent.right - CameraExtent.left) * 0.1f;
     
-    
+    hp = 100; left_ball = 5;
     
     entityVector.push_back(new FlatEntity(world, CameraExtent.right - CameraExtent.left, 30, true, DARKGREEN, { 0, 200 }));
     entityVector.push_back(new FlatEntity(world, 30, 270, true, GRAY, { 0, 50 }));
 
-    
-    
+    entityVector.push_back(new FlatEntity(world, 30, 70, true, RED, { 300, 150 }));
+    entityVector.push_back(new FlatEntity(world, 15, 15, true, RED, { 300, 107 }));
+
+    entityVector.push_back(new FlatEntity(world, 1, 600, true, WHITE, { 330, 0 })); // right wall
+    entityVector.push_back(new FlatEntity(world, 800, 1, true, WHITE, { 0, -220 })); // upper wall
     
 
     Btn.SetButton(" || ", 40, 20, 20);
-    Btn.SetPosition(1000, 80);
-    Btn_Stop_Resume.SetButton("Resume", 300, 50, 20, 6, 500, 450);
-    Btn_Stop_Retry.SetButton("Retry", 300, 50, 20, 6, 500, 550);
-    Btn_Stop_Mainmenu.SetButton("Mainmenu", 300, 50, 20, 6, 500, 650);
+    Btn.SetPosition(940, 30);
+    Btn_Resume.SetButton("Resume", 300, 50, 20, 6, 500, 450);
+    Btn_Retry.SetButton("Retry", 300, 50, 20, 6, 500, 550);
+    Btn_Mainmenu.SetButton("Mainmenu", 300, 50, 20, 6, 500, 650);
     entityVector.push_back(cannon->GetEntity());
+
     texture_start_page = LoadTexture("asset/start_page.png");
-    texture_target = LoadTexture("asset/target.png");
 }
 
 void Game::UpdateGameClear()
 {
+    Btn_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Retry.click_connect(this, &Game::retry);
 }
 
 void Game::DrawGameClear()
 {
+    Screen::DimScreen();
+    DrawRectangle(200, 120, 900, 600, WHITE);
+    DrawText("Game Clear", 420, 300, 80, BLACK);
+
+    Btn_Retry.draw();
+    Btn_Mainmenu.draw();
 }
-
-
 
 void Game::UpdateGame(float deltaTime) {
     
@@ -78,7 +87,10 @@ void Game::UpdateGame(float deltaTime) {
         }
     }
     
-    
+    if (IsKeyPressed(KEY_C))
+        ApplicationState = ApplicationStates::GameClear;
+    if (IsKeyPressed(KEY_G))
+        ApplicationState = ApplicationStates::GameOver;
         
     if (IsKeyPressed(KEY_T))
     {
@@ -164,9 +176,9 @@ void Game::DrawMainMenu()
 void Game::UpdatePaused()
 {
     Btn.click_connect(this, &Game::run);
-    Btn_Stop_Resume.click_connect(this, &Game::run);
-    Btn_Stop_Mainmenu.click_connect(this, &Game::to_menu);
-    Btn_Stop_Retry.click_connect(this, &Game::retry);
+    Btn_Resume.click_connect(this, &Game::run);
+    Btn_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Retry.click_connect(this, &Game::retry);
 }
 
 void Game::DrawPaused()
@@ -176,18 +188,25 @@ void Game::DrawPaused()
     DrawText("Game Pause", 420, 300, 80, BLACK);
 
     Btn.draw();
-    Btn_Stop_Resume.draw();
-    Btn_Stop_Retry.draw();
-    Btn_Stop_Mainmenu.draw();
+    Btn_Resume.draw();
+    Btn_Retry.draw();
+    Btn_Mainmenu.draw();
 }
 
 void Game::UpdateGameOver()
 {
-    
+    Btn_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Retry.click_connect(this, &Game::retry);
 }
 
 void Game::DrawGameOver()
 {
+    Screen::DimScreen();
+    DrawRectangle(200, 120, 900, 600, WHITE);
+    DrawText("Game Over", 420, 300, 80, BLACK);
+
+    Btn_Retry.draw();
+    Btn_Mainmenu.draw();
 }
 
 void Game::Draw(float deltaTime) {
@@ -204,14 +223,17 @@ void Game::Draw(float deltaTime) {
         cannon->DrawSlingshot();
     }
 
-    
-    
+    DrawRectangle(-325, -220, 150, 40, BLUE);
+    for (int i = 0; i < left_ball; i++)
+        DrawCircle(- 310 + 30 * i, - 200, 10, GREEN);
+    DrawRectangle(175, -220, 150, 40, BLUE);
+    DrawText("HP", 180, -205, 10, BLACK);
+    DrawRectangle(200, -210, 1.25 * hp, 20, RED);
 
     EndMode2D();
 
     Btn.draw();
     
-    DrawTexture(texture_target, 1200, 600, WHITE);
     DrawText(TextFormat("StepTime : %.4fms", stepTime * 1000), 20, GetScreenHeight() - 30 - 10 - 20 - 20, 20, YELLOW);
     DrawText(TextFormat("BodyCount : %d", world.BodyCount()), 20, GetScreenHeight() - 30 - 10 - 20, 20, YELLOW);
     DrawText(TextFormat("Zoom : %d %%", int(camera.camera.zoom / defaultZoom * 100)), 20, GetScreenHeight() - 30 - 10, 20, YELLOW);
