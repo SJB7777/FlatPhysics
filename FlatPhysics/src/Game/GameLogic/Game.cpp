@@ -28,9 +28,14 @@ void Game::Setting() {
     
     
 
-    Btn.SetButton("button", 300, 50, 20);
-    Btn.SetPosition(100, 100);
+    Btn.SetButton(" || ", 40, 20, 20);
+    Btn.SetPosition(1000, 80);
+    Btn_Stop_Resume.SetButton("Resume", 300, 50, 20, 6, 500, 450);
+    Btn_Stop_Retry.SetButton("Retry", 300, 50, 20, 6, 500, 550);
+    Btn_Stop_Mainmenu.SetButton("Mainmenu", 300, 50, 20, 6, 500, 650);
     entityVector.push_back(cannon->GetEntity());
+    texture_start_page = LoadTexture("asset/start_page.png");
+    texture_target = LoadTexture("asset/target.png");
 }
 
 void Game::UpdateGameClear()
@@ -144,25 +149,36 @@ void Game::UpdateGame(float deltaTime) {
 
 void Game::UpdateMainMenu()
 {
-    
+
+    if (ApplicationState == ApplicationStates::Menu)
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            ApplicationState = ApplicationStates::Running;
     
 }
 
 void Game::DrawMainMenu()
 {
-
+    DrawTexture(texture_start_page, 0, 0, WHITE);
 }
 
 void Game::UpdatePaused()
 {
     Btn.click_connect(this, &Game::run);
-    
+    Btn_Stop_Resume.click_connect(this, &Game::run);
+    Btn_Stop_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Stop_Retry.click_connect(this, &Game::retry);
 }
 
 void Game::DrawPaused()
 {
     Screen::DimScreen();
+    DrawRectangle(200, 120, 900, 600, WHITE);
+    DrawText("Game Pause", 420, 300, 80, BLACK);
+
     Btn.draw();
+    Btn_Stop_Resume.draw();
+    Btn_Stop_Retry.draw();
+    Btn_Stop_Mainmenu.draw();
 }
 
 void Game::UpdateGameOver()
@@ -195,7 +211,7 @@ void Game::Draw(float deltaTime) {
 
     Btn.draw();
     
-    
+    DrawTexture(texture_target, 1200, 600, WHITE);
     DrawText(TextFormat("StepTime : %.4fms", stepTime * 1000), 20, GetScreenHeight() - 30 - 10 - 20 - 20, 20, YELLOW);
     DrawText(TextFormat("BodyCount : %d", world.BodyCount()), 20, GetScreenHeight() - 30 - 10 - 20, 20, YELLOW);
     DrawText(TextFormat("Zoom : %d %%", int(camera.camera.zoom / defaultZoom * 100)), 20, GetScreenHeight() - 30 - 10, 20, YELLOW);

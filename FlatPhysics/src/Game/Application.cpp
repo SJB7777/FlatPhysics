@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-	ApplicationState = ApplicationStates::Running;
+	ApplicationState = ApplicationStates::Menu;
 	Game game;
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Game");

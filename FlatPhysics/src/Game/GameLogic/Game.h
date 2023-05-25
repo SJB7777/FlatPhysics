@@ -13,7 +13,6 @@ struct CameraExtents {
 	float right;
 	float bottom;
 	float top;
-	float hi;
 };
 
 struct CameraManager {
@@ -96,12 +95,20 @@ private:
 	std::vector<Vector2> vertexBuffer;
 
 	Button Btn;
+	Button Btn_Stop_Retry;
+	Button Btn_Stop_Resume;
+	Button Btn_Stop_Mainmenu;
+
 	void run() { ApplicationState = ApplicationStates::Running; }
 	void pause() { ApplicationState = ApplicationStates::Paused; }
-
+	void to_menu() { ApplicationState = ApplicationStates::Menu; }
+	void retry() { ApplicationState = ApplicationStates::Running;}
 	
 	FlatVector cannonOrigin = { -250.0f, 150.0f };
 	Cannon* cannon = new Cannon(world, 10.0f);
+
+	Texture2D texture_start_page;
+	Texture2D texture_target;
 };
 
 
