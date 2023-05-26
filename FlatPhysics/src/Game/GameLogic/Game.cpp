@@ -248,8 +248,6 @@ void Game::Draw(float deltaTime) {
         cannon->DrawSlingshot();
     }
 
-    cannon->DrawSlingshot_Stand();
-
     DrawRectangle(-325, -220, 150, 40, BLUE);
     for (int i = 0; i < left_ball; i++)
         DrawCircle(- 310 + 30 * i, - 200, 10, GREEN);
