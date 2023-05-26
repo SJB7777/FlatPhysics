@@ -105,6 +105,11 @@ void FlatEntity::MoveTo(const FlatVector& amount)
 	multiBody->MoveTo(amount);
 }
 
+void FlatEntity::SetVelocity(const FlatVector& velocity)
+{
+	multiBody->LinearVelocity = velocity;
+}
+
 void FlatEntity::AddForce(const FlatVector& force)
 {
 	multiBody->AddForce(force);

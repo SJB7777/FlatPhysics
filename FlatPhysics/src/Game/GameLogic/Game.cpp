@@ -68,9 +68,11 @@ void Game::UpdateGame(float deltaTime) {
         cannon->GetEntity()->MoveTo(FlatConverter::ToFlatVector(GetScreenToWorld2D(GetMousePosition(), camera.camera)));
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
+            FlatEntity* entity = cannon->GetEntity();
             cannon->isClicked = false;
-            cannon->GetEntity()->GetBody()->IsStatic = false;
-            cannon->GetEntity()->AddForce(cannon->GetDisplacement() * -1000000.0f);
+            entity->GetBody()->IsStatic = false;
+            entity->SetVelocity(FlatVector::Zero());
+            entity->AddForce(cannon->GetDisplacement() * -1000000.0f);
             printf("%f\n", cannon->GetEntity()->GetBody()->force.y);
             
         }

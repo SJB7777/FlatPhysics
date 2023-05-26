@@ -26,6 +26,7 @@ public:
 	FlatVector GetPosition();
 	
 	void MoveTo(const FlatVector& amount);
+	void SetVelocity(const FlatVector& amount);
 	void AddForce(const FlatVector& force);
 	void ToggleIsStatic();
 };
