@@ -108,16 +108,36 @@ private:
 	Button Btn_Retry;
 	Button Btn_Resume;
 	Button Btn_Mainmenu;
+	Button Btn_Music;
 
+	void initialize() {
+		left_ball = 5;
+		hp = 100;
+		music_select = 1;
+		StopMusicStream(music);
+		StopMusicStream(music2);
+	}
 	void run() { ApplicationState = ApplicationStates::Running; }
 	void pause() { ApplicationState = ApplicationStates::Paused; }
 	void to_menu() { ApplicationState = ApplicationStates::Menu; }
-	void retry() { ApplicationState = ApplicationStates::Running;}
+	void retry() {
+		ApplicationState = ApplicationStates::Running;
+		initialize();
+	}
+	void music_change() {
+		if (music_select == 1)
+			music_select = 2;
+		else if (music_select == 2)
+			music_select = 1;
+	}
 	
 	FlatVector cannonOrigin = { -250.0f, 150.0f };
 	Cannon* cannon = new Cannon(world, 10.0f);
 
 	Texture2D texture_start_page;
+	Music music;
+	Music music2;
+	int music_select, music_mute;
 };
 
 

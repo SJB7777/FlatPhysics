@@ -14,6 +14,7 @@ CameraExtents CameraManager::GetExtents()
 void Game::Setting() {
     SetTargetFPS(60);
     SetWindowPosition(10, 40);
+    InitAudioDevice();
 
     CameraExtents CameraExtent = camera.GetExtents();
     
@@ -36,9 +37,14 @@ void Game::Setting() {
     Btn_Resume.SetButton("Resume", 300, 50, 20, 6, 500, 450);
     Btn_Retry.SetButton("Retry", 300, 50, 20, 6, 500, 550);
     Btn_Mainmenu.SetButton("Mainmenu", 300, 50, 20, 6, 500, 650);
+    Btn_Music.SetButton("Music", 60, 30, 20, 6, 860, 25);
     entityVector.push_back(cannon->GetEntity());
 
     texture_start_page = LoadTexture("asset/start_page.png");
+    music = LoadMusicStream("asset/bgm.mp3");
+    music2 = LoadMusicStream("asset/bgm2.mp3");
+    music_select = 1;
+    music_mute = 0;
 }
 
 void Game::UpdateGameClear()
@@ -158,10 +164,28 @@ void Game::UpdateGame(float deltaTime) {
         entityVector.erase(remove(entityVector.begin(), entityVector.end(), entity), entityVector.end());
     }*/
     Btn.click_connect(this, &Game::pause);
+    Btn_Music.click_connect(this, &Game::music_change);
+
+    if (music_select == 1) {
+        StopMusicStream(music2);
+        UpdateMusicStream(music);
+        PlayMusicStream(music);
+    }
+    else if (music_select == 2) {
+        StopMusicStream(music);
+        UpdateMusicStream(music2);
+        PlayMusicStream(music2);
+    }
+
+    if (left_ball == 0)
+        ApplicationState = ApplicationStates::GameOver;
+    if(hp == 0)
+        ApplicationState = ApplicationStates::GameClear;
 }
 
 void Game::UpdateMainMenu()
 {
+    initialize();
 
     if (ApplicationState == ApplicationStates::Menu)
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -229,7 +253,7 @@ void Game::Draw(float deltaTime) {
     DrawRectangle(-325, -220, 150, 40, BLUE);
     for (int i = 0; i < left_ball; i++)
         DrawCircle(- 310 + 30 * i, - 200, 10, GREEN);
-    for (int i = left_ball; i < 5; i++) {
+    for (int i = left_ball; i < 5 && i >= 0; i++) {
         DrawCircle(-310 + 30 * i, -200, 10, GREEN);
         DrawLine(-175 - 30 * i, -215, -205 - 30 * i, -185, RED);
     }
@@ -240,6 +264,7 @@ void Game::Draw(float deltaTime) {
     EndMode2D();
 
     Btn.draw();
+    Btn_Music.draw();
     
     DrawText(TextFormat("StepTime : %.4fms", stepTime * 1000), 20, GetScreenHeight() - 30 - 10 - 20 - 20, 20, YELLOW);
     DrawText(TextFormat("BodyCount : %d", world.BodyCount()), 20, GetScreenHeight() - 30 - 10 - 20, 20, YELLOW);

@@ -53,6 +53,7 @@ int main(int argc, char** argv)
 			BeginDrawing();
 			ClearBackground(SKYBLUE);
 
+				game.Draw(time);
 				game.DrawGameOver();
 
 			EndDrawing();
@@ -62,6 +63,7 @@ int main(int argc, char** argv)
 			BeginDrawing();
 			ClearBackground(SKYBLUE);
 
+				game.Draw(time);
 				game.DrawGameClear();
 
 			EndDrawing();
@@ -72,7 +74,7 @@ int main(int argc, char** argv)
 	}
 
 	game.End();
-
+	
 	return 0;
 }
 
