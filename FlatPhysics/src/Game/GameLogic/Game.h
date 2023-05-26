@@ -41,7 +41,7 @@ public:
 	{
 		return cannon->GetPosition() - origin;
 	}
-	void DrawSlingshot()
+	void DrawRober()
 	{
 		FlatVector endPos = cannon->GetPosition();
 		displacement = endPos - origin;

@@ -183,7 +183,7 @@ void Game::Draw(float deltaTime) {
 
     if (cannon->isClicked)
     {
-        cannon->DrawSlingshot();
+        cannon->DrawRober();
     }
     cannon->Draw();
 
