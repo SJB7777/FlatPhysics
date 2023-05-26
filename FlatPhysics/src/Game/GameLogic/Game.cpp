@@ -36,6 +36,8 @@ void Game::Setting() {
     Btn_Resume.SetButton("Resume", 300, 50, 20, 6, 500, 450);
     Btn_Retry.SetButton("Retry", 300, 50, 20, 6, 500, 550);
     Btn_Mainmenu.SetButton("Mainmenu", 300, 50, 20, 6, 500, 650);
+    
+    cannon = new Cannon(world, 10.0f);
     entityVector.push_back(cannon->GetEntity());
 
     texture_start_page = LoadTexture("asset/start_page.png");
@@ -79,10 +81,12 @@ void Game::UpdateGame(float deltaTime) {
         cannon->GetEntity()->MoveTo(FlatConverter::ToFlatVector(GetScreenToWorld2D(GetMousePosition(), camera.camera)));
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
+            FlatEntity* entity = cannon->GetEntity();
             cannon->isClicked = false;
-            cannon->GetEntity()->GetBody()->IsStatic = false;
-            cannon->GetEntity()->AddForce(cannon->GetDisplacement() * -1000000.0f);
-            printf("%f\n", cannon->GetEntity()->GetBody()->force.y);
+            entity->GetBody()->IsStatic = false;
+            entity->SetVelocity(FlatVector::Zero());
+            entity->AddForce(cannon->GetDisplacement() * -1000000.0f);
+            
             
         }
     }
@@ -220,8 +224,9 @@ void Game::Draw(float deltaTime) {
 
     if (cannon->isClicked)
     {
-        cannon->DrawSlingshot();
+        cannon->DrawRober();
     }
+    cannon->Draw();
 
     DrawRectangle(-325, -220, 150, 40, BLUE);
     for (int i = 0; i < left_ball; i++)

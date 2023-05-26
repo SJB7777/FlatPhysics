@@ -110,6 +110,12 @@ void FlatEntity::AddForce(const FlatVector& force)
 	multiBody->AddForce(force);
 }
 
+void FlatEntity::SetVelocity(const FlatVector& velocity)
+{
+	multiBody->LinearVelocity = velocity;
+}
+
+
 void FlatEntity::ToggleIsStatic()
 {
 	multiBody->IsStatic = !multiBody->IsStatic;
