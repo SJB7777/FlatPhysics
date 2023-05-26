@@ -72,10 +72,15 @@ public:
 	void DrawScore();
 
 	void End();
+
+	int hp, left_ball;
 	
 private:
 	double stepTime;
 	float alpha = 0.75f;
+
+	//score
+	int total_score = 0;
 	
 	std::string errorMessage;
 	
@@ -98,13 +103,24 @@ private:
 	std::vector<Vector2> vertexBuffer;
 
 	Button Btn,start_btn, exit_btn;
+	Button Btn_Retry;
+	Button Btn_Resume;
+	Button Btn_Mainmenu;
+
 	void run() { ApplicationState = ApplicationStates::Running; }
 	void pause() { ApplicationState = ApplicationStates::Paused; }
 	void exit() { ApplicationState = ApplicationStates::Exit; }
-
+	void to_menu() { ApplicationState = ApplicationStates::Menu; }
+	void retry() { ApplicationState = ApplicationStates::Running; }
 	
 	FlatVector cannonOrigin = { -250.0f, 150.0f };
 	Cannon* cannon = new Cannon(world, 10.0f);
+
+	Texture2D texture_start_page;
+
+	//textbox
+	Rectangle textbox = { GetScreenWidth() / 2 - 100, 180, 225, 50 };
+	bool mouseontext = false;
 };
 
 

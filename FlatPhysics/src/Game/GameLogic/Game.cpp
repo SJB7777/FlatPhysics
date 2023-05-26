@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <stdexcept>
+#define NAMELEN 10 //9+1
 
 CameraExtents CameraManager::GetExtents()
 {
@@ -19,34 +20,54 @@ void Game::Setting() {
     
     float padding = (CameraExtent.right - CameraExtent.left) * 0.1f;
     
-    
+    hp = 100; left_ball = 5;
     
     entityVector.push_back(new FlatEntity(world, CameraExtent.right - CameraExtent.left, 30, true, DARKGREEN, { 0, 200 }));
     entityVector.push_back(new FlatEntity(world, 30, 270, true, GRAY, { 0, 50 }));
 
-    
+    entityVector.push_back(new FlatEntity(world, 30, 70, true, RED, { 300, 150 }));
+    entityVector.push_back(new FlatEntity(world, 15, 15, true, RED, { 300, 107 }));
+
+    entityVector.push_back(new FlatEntity(world, 1, 600, true, WHITE, { 330, 0 })); // right wall
+    entityVector.push_back(new FlatEntity(world, 800, 1, true, WHITE, { 0, -220 })); // upper wall
     
     
 
-    Btn.SetButton("button", 300, 50, 20);
-    Btn.SetPosition(100, 100);
+    Btn.SetButton(" || ", 40, 20, 20);
+    Btn.SetPosition(940, 30);
+    Btn_Resume.SetButton("Resume", 300, 50, 20, 6, 500, 450);
+    Btn_Retry.SetButton("Retry", 300, 50, 20, 6, 500, 550);
+    Btn_Mainmenu.SetButton("Mainmenu", 300, 50, 20, 6, 500, 650);
     entityVector.push_back(cannon->GetEntity());
 
-    int HT = WINDOW_HEIGHT, WT = WINDOW_WIDTH;
+    texture_start_page = LoadTexture("asset/start_page.png");
 
+    //menu button
+    int HT = WINDOW_HEIGHT, WT = WINDOW_WIDTH;
     ApplicationState = ApplicationStates::Menu;
-    start_btn.SetButton("Start", WT/3, HT/8, 15, 6.0f , WT / 2-WT/6, HT * 3 / 6);
-    exit_btn.SetButton("Exit", WT / 3, HT / 8, 15, 6.0f, WT / 2 - WT / 6, HT * 4 / 6);
+    start_btn.SetButton("Start", WT/4, HT/10, 30, 6.0f , WT / 2 -WT/4 - WT/8, HT * 4 / 6);
+    exit_btn.SetButton("Exit", WT / 4, HT /10, 30, 6.0f, WT / 2 - WT / 4 + WT*3/8, HT * 4 / 6);
+    
+
+
 }
 
 void Game::UpdateGameClear()
 {
-
+    Btn_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Retry.click_connect(this, &Game::retry);
 
 }
 
 void Game::DrawGameClear()
 {
+    Screen::DimScreen();
+    DrawRectangle(200, 120, 900, 600, WHITE);
+    DrawText("Game Clear", 420, 300, 80, BLACK);
+
+    Btn_Retry.draw();
+    Btn_Mainmenu.draw();
+
 }
 
 
@@ -81,7 +102,10 @@ void Game::UpdateGame(float deltaTime) {
         }
     }
     
-    
+    if (IsKeyPressed(KEY_C))
+        ApplicationState = ApplicationStates::GameClear;
+    if (IsKeyPressed(KEY_G))
+        ApplicationState = ApplicationStates::GameOver;
         
     if (IsKeyPressed(KEY_T))
     {
@@ -149,6 +173,7 @@ void Game::UpdateGame(float deltaTime) {
     }*/
     Btn.click_connect(this, &Game::pause);
 
+    
 
 }
 
@@ -160,32 +185,51 @@ void Game::UpdateMainMenu()
 
 void Game::DrawMainMenu()
 {
+
+    DrawTexture(texture_start_page, 0, 0, WHITE);
     start_btn.draw();
     exit_btn.draw();
+   /*
     for (int r = 1; r < 8; r++)
         for (int c = 1; c < 8; c++)
             DrawCircle(WINDOW_WIDTH / 8 * r, WINDOW_HEIGHT / 8 * c, 2.0f, BLACK);
+    */
 }
 
 void Game::UpdatePaused()
 {
     Btn.click_connect(this, &Game::run);
-    
+    Btn_Resume.click_connect(this, &Game::run);
+    Btn_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Retry.click_connect(this, &Game::retry);
 }
 
 void Game::DrawPaused()
 {
     Screen::DimScreen();
+    DrawRectangle(200, 120, 900, 600, WHITE);
+    DrawText("Game Pause", 420, 300, 80, BLACK);
+
     Btn.draw();
+    Btn_Resume.draw();
+    Btn_Retry.draw();
+    Btn_Mainmenu.draw();
 }
 
 void Game::UpdateGameOver()
 {
-    
+    Btn_Mainmenu.click_connect(this, &Game::to_menu);
+    Btn_Retry.click_connect(this, &Game::retry);
 }
 
 void Game::DrawGameOver()
 {
+    Screen::DimScreen();
+    DrawRectangle(200, 120, 900, 600, WHITE);
+    DrawText("Game Over", 420, 300, 80, BLACK);
+
+    Btn_Retry.draw();
+    Btn_Mainmenu.draw();
 }
 
 void Game::Draw(float deltaTime) {
@@ -202,7 +246,12 @@ void Game::Draw(float deltaTime) {
         cannon->DrawSlingshot();
     }
 
-    
+    DrawRectangle(-325, -220, 150, 40, BLUE);
+    for (int i = 0; i < left_ball; i++)
+        DrawCircle(-310 + 30 * i, -200, 10, GREEN);
+    DrawRectangle(175, -220, 150, 40, BLUE);
+    DrawText("HP", 180, -205, 10, BLACK);
+    DrawRectangle(200, -210, 1.25 * hp, 20, RED);
     
 
     EndMode2D();
@@ -218,5 +267,53 @@ void Game::Draw(float deltaTime) {
 
 void Game::End() {
     
+}
+
+void Game::UpdateScore(){
+    char name[NAMELEN] = "\0";
+    int letterCount = 0;
+
+    if (CheckCollisionPointRec(GetMousePosition(), textbox)) //mouse in textbox
+        mouseontext = true;
+    else
+        mouseontext = false;
+
+    if (mouseontext)
+    {
+        // Set the window's cursor to the I-Beam
+        SetMouseCursor(MOUSE_CURSOR_IBEAM);
+
+        // Get char pressed (unicode character) on the queue
+        int key = GetCharPressed();
+
+        // Check if more characters have been pressed on the same frame
+        while (key > 0)
+        {
+            // NOTE: Only allow keys in range [32..125]
+            if ((key >= 32) && (key <= 125) && (letterCount < NAMELEN-1))
+            {
+                name[letterCount] = (char)key;
+                name[letterCount + 1] = '\0'; // Add null terminator at the end of the string.
+                letterCount++;
+            }
+
+            key = GetCharPressed();  // Check next character in the queue
+        }
+
+        if (IsKeyPressed(KEY_BACKSPACE))
+        {
+            letterCount--;
+            if (letterCount < 0) letterCount = 0;
+            name[letterCount] = '\0';
+        }
+    }
+    else SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+
+    if (mouseOnText) framesCounter++;
+    else framesCounter = 0;
+}
+
+void Game::DrawScore(){
+
 }
 

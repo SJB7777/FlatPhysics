@@ -1,7 +1,7 @@
 #pragma once
 
 
-#define NAMELEN 21
+#define NAMELEN 10 //9+1
 #define MAX_SIZE 10
 #define BOARD_SIZE 3
 
