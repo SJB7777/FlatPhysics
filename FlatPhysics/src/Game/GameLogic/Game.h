@@ -37,15 +37,23 @@ public:
 	{
 		return cannon->GetPosition() - origin;
 	}
+	void DrawSlingshot_Stand() {
+		GameDraw::DrawLine({ -250, 130 }, { -250, 185 }, 5, BROWN);
+		GameDraw::DrawLine({ -250, 130 }, { -230, 100 }, 3, BROWN);
+		GameDraw::DrawLine({ -250, 130 }, { -270, 100 }, 3, BROWN);
+	}
 	void DrawSlingshot()
 	{
 		FlatVector endPos = cannon->GetPosition();
 		displacement = endPos - origin;
 		float thick = sqrt(100.0f / FlatMath::Length(displacement));
-		GameDraw::DrawLine(origin, endPos, thick, BROWN);
+	//	GameDraw::DrawLine(origin, endPos, thick, BROWN);
+		GameDraw::DrawLine({-230, 100}, endPos, thick, BROWN);
+		GameDraw::DrawLine({-270, 100}, endPos, thick, BROWN);
 	}
 	FlatEntity* GetEntity() { return cannon; }
 	bool isClicked = false;
+
 };
 
 class Game

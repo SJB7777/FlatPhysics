@@ -79,6 +79,7 @@ void Game::UpdateGame(float deltaTime) {
         cannon->GetEntity()->MoveTo(FlatConverter::ToFlatVector(GetScreenToWorld2D(GetMousePosition(), camera.camera)));
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
+            left_ball--;
             cannon->isClicked = false;
             cannon->GetEntity()->GetBody()->IsStatic = false;
             cannon->GetEntity()->AddForce(cannon->GetDisplacement() * -1000000.0f);
@@ -91,7 +92,7 @@ void Game::UpdateGame(float deltaTime) {
         ApplicationState = ApplicationStates::GameClear;
     if (IsKeyPressed(KEY_G))
         ApplicationState = ApplicationStates::GameOver;
-        
+
     if (IsKeyPressed(KEY_T))
     {
         camera.camera.zoom = defaultZoom;
@@ -223,9 +224,15 @@ void Game::Draw(float deltaTime) {
         cannon->DrawSlingshot();
     }
 
+    cannon->DrawSlingshot_Stand();
+
     DrawRectangle(-325, -220, 150, 40, BLUE);
     for (int i = 0; i < left_ball; i++)
         DrawCircle(- 310 + 30 * i, - 200, 10, GREEN);
+    for (int i = left_ball; i < 5; i++) {
+        DrawCircle(-310 + 30 * i, -200, 10, GREEN);
+        DrawLine(-175 - 30 * i, -215, -205 - 30 * i, -185, RED);
+    }
     DrawRectangle(175, -220, 150, 40, BLUE);
     DrawText("HP", 180, -205, 10, BLACK);
     DrawRectangle(200, -210, 1.25 * hp, 20, RED);
